@@ -61,6 +61,7 @@ export class BetablockerCdkStack extends Stack {
         }
       ]
     });
+    new CfnOutput(this, 'PreprodDistributionId', { value: preprodDistribution.distributionId });
     new CfnOutput(this, 'PreprodDistributionDomain', { value: preprodDistribution.distributionDomainName });
 
 
@@ -110,8 +111,7 @@ export class BetablockerCdkStack extends Stack {
         }
       ]
     });
+    new CfnOutput(this, 'ProdDistributionId', { value: preprodDistribution.distributionId });
     new CfnOutput(this, 'ProdDistributionDomain', { value: prodDistribution.distributionDomainName });
-
-
   }
 }
