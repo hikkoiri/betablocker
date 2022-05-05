@@ -1,6 +1,6 @@
 # betablocker
 
-> Disclaimer: This is not a finished project yet
+> Disclaimer: This is not a finished project yet. It still needs to be public, so that I can work with Github environments ;)
 
 - [betablocker](#betablocker)
   - [What is it?](#what-is-it)
