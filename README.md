@@ -45,3 +45,15 @@ Thats not more than a basic "Hello World" site inside the folder `website`. Its 
 ### A deployment pipeline based on Github action 
 
 You can find it inside the `.github` folder.
+
+For the manual approval to work, you need to have a public Github repo or use Github Enterprise. If that is not viable, dont make use of the approval mechanisms and separate the deployment pipelines. You will find a solution.
+
+You need to provide these Github action secrets, for the pipeline to work:
+
+- AWS_ACCESS_KEY_ID
+- AWS_SECRET_ACCESS_KEY
+- S3_BUCKET_REGION
+- S3_BUCKET_PREPROD
+- CLOUDFRONT_DISTRIBUTION_ID_PREPROD
+- S3_BUCKET_PROD
+- CLOUDFRONT_DISTRIBUTION_ID_PROD
