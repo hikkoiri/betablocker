@@ -15,11 +15,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16.x'
-        cache: 'npm'
     - name: Deploy Preprod
       uses: reggionick/s3-deploy@v3
       with:
@@ -40,11 +35,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16.x'
-        cache: 'npm'
     - name: Deploy Prod
       uses: reggionick/s3-deploy@v3
       with:
