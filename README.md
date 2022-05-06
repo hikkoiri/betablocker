@@ -30,7 +30,7 @@ The infrastructure as code to create and configure the necessary AWS resources, 
 
 Create the resources by running:
 ```bash
-cdk deploy
+cdk deploy --all
 ```
 
 > Note, that after running the command, you will get the Cloudfront distribution ids for both environments. Note them down, you will need them when configuring your pipeline.
