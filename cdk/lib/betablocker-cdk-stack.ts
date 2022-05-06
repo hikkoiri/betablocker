@@ -1,14 +1,12 @@
 #!/usr/bin/env node
-import * as route53 from 'aws-cdk-lib/aws-route53';
 import * as s3 from 'aws-cdk-lib/aws-s3';
-import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
-import * as acm from 'aws-cdk-lib/aws-certificatemanager';
-import * as targets from 'aws-cdk-lib/aws-route53-targets';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
-//import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { CfnOutput, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { Code, Runtime, Version } from 'aws-cdk-lib/aws-lambda';
+import { join } from 'path'
+import { NodejsFunction, NodejsFunctionProps } from 'aws-cdk-lib/aws-lambda-nodejs';
 
 
 
@@ -45,6 +43,15 @@ export class BetablockerCdkStack extends Stack {
       principals: [new iam.CanonicalUserPrincipal(preprodCloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)]
     }));
 
+
+
+
+    const myFunc = new cloudfront.experimental.EdgeFunction(this, 'MyFunction', {
+      runtime: Runtime.NODEJS_14_X,
+      handler: 'enforce-basic-auth.handler',
+      code: Code.fromAsset(join(__dirname, '../lambdas')),
+    });
+
     const preprodDistribution = new cloudfront.CloudFrontWebDistribution(this, 'PreprodDistribution', {
       originConfigs: [
         {
@@ -56,7 +63,13 @@ export class BetablockerCdkStack extends Stack {
           behaviors: [{
             isDefaultBehavior: true,
             compress: true,
-            allowedMethods: cloudfront.CloudFrontAllowedMethods.GET_HEAD_OPTIONS
+            allowedMethods: cloudfront.CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
+            lambdaFunctionAssociations: [
+              {
+                eventType: cloudfront.LambdaEdgeEventType.VIEWER_REQUEST,
+                lambdaFunction: myFunc.currentVersion,
+              },
+            ],
           }]
         }
       ]
@@ -66,8 +79,24 @@ export class BetablockerCdkStack extends Stack {
 
 
 
+    // const nodeJsFunctionProps: NodejsFunctionProps = {
+    //   bundling: {
+    //     externalModules: [
+    //       'aws-sdk', // Use the 'aws-sdk' available in the Lambda runtime
+    //     ],
+    //   },
+    //   depsLockFilePath: join(__dirname, '../lambdas', 'package-lock.json'),
+    //   runtime: Runtime.NODEJS_14_X,
+    // }
 
 
+
+
+    // const myFunc = new cloudfront.experimental.EdgeFunction(this, 'MyFunction', {
+    //   runtime: Runtime.NODEJS_12_X,
+    //   handler: 'index.handler',
+    //   code: Code.fromAsset(join(__dirname, '../lambdas', 'enforce-basic-auth')),
+    // });
 
 
 

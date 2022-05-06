@@ -2,6 +2,7 @@
 
 > Disclaimer: This is not a finished project yet. It still needs to be public, so that I can work with Github environments ;)
 
+
 - [betablocker](#betablocker)
   - [What is it?](#what-is-it)
   - [Lets draw some pictures](#lets-draw-some-pictures)
@@ -9,10 +10,13 @@
     - [AWS CDK for setting up & configuring AWS resources](#aws-cdk-for-setting-up--configuring-aws-resources)
     - [A sample project which we want to deploy](#a-sample-project-which-we-want-to-deploy)
     - [A deployment pipeline based on Github action](#a-deployment-pipeline-based-on-github-action)
+    - [More references why integrating Cognito is not that easy](#more-references-why-integrating-cognito-is-not-that-easy)
 
 ## What is it?
 
-A pre-production deployment of a static website (can also be considered as `beta` version) on AWS S3, distributed by AWS Cloudfront and secured by a Lambda@Edge function enforcing authentication against AWS Cognito (to `block` unwanted visitors to see what you are currently working on). Therefore the name `betablocker`. lol
+A pre-production deployment of a static website (can also be considered as `beta` version) on AWS S3, distributed by AWS Cloudfront and secured by a Lambda@Edge function enforcing authentication ~~against AWS Cognito~~ using Basic Authentication (to `block` unwanted visitors to see what you are currently working on). Therefore the name `betablocker`. lol
+
+> Plan was to use Cognito, but as it turns out integrating a third party identity provider is a huge pain in the a** and definitely not worth it for my intentions.
 
 ## Lets draw some pictures
 
@@ -59,3 +63,8 @@ You need to provide these Github action secrets, for the pipeline to work:
 - CLOUDFRONT_DISTRIBUTION_ID_PREPROD
 - S3_BUCKET_PROD
 - CLOUDFRONT_DISTRIBUTION_ID_PROD
+
+
+### More references why integrating Cognito is not that easy
+- https://aws.amazon.com/de/blogs/networking-and-content-delivery/authorizationedge-using-cookies-protect-your-amazon-cloudfront-content-from-being-downloaded-by-unauthenticated-users/
+- https://github.com/aws-samples/cloudfront-authorization-at-edge
